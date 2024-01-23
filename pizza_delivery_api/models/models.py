@@ -1,7 +1,9 @@
-from .connection.database import Base
-from sqlalchemy import Column, Integer, Boolean, Text, String, ForeignKey
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
-from sqlalchemy_utils.types import ChoiceType 
+from sqlalchemy_utils.types import ChoiceType
+
+from .connection.database import Base
+
 
 class User(Base):
     __tablename__ = 'user'
@@ -14,7 +16,6 @@ class User(Base):
     is_active = Column(Boolean, default=False)
     orders = relationship('Order', back_populates='user')
 
-
     def __repr__(self):
         return f'<User {self.username}'
 
@@ -24,24 +25,26 @@ class Order(Base):
     ORDER_STATUSES = (
         ('PENDING', 'pending'),
         ('IN-TRANSIT', 'in-transit'),
-        ('DELIVERED', 'delivered')
+        ('DELIVERED', 'delivered'),
     )
 
     PIZZA_SIZES = (
         ('SMALL', 'small'),
         ('MEDIUM', 'medium'),
         ('LARGE', 'large'),
-        ('EXTRA-LARGE', 'extra-large')
+        ('EXTRA-LARGE', 'extra-large'),
     )
-    
-    __tablename__='orders'
+
+    __tablename__ = 'orders'
 
     id = Column(Integer, primary_key=True)
     quantity = Column(Integer, nullable=False)
-    order_status = Column(ChoiceType(choices=ORDER_STATUSES), default='PENDING')
+    order_status = Column(
+        ChoiceType(choices=ORDER_STATUSES), default='PENDING'
+    )
     pizza_size = Column(ChoiceType(choices=PIZZA_SIZES), default='SMALL')
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship('User', back_populates='orders')
 
     def __repr__(self):
-        return f'<Order {self.id}'   
+        return f'<Order {self.id}'
