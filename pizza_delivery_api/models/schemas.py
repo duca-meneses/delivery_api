@@ -18,3 +18,12 @@ class SignUpModelResponse(BaseModel):
     is_staff: bool = False
     is_active: bool = False
     model_config = ConfigDict(from_atributes=True)
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: str | None = None
+    
