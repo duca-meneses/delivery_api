@@ -1,9 +1,14 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import declarative_base, Session
 
-from .secrets import connection_uri
+from .secrets import Settings
 
-engine = create_engine(connection_uri, echo=True)
+settings = Settings()
+
+engine = create_engine(settings.DATABASE_URL)
 
 Base = declarative_base()
-Session = sessionmaker()
+
+def get_session():
+    with Session(engine) as session:
+        yield session
