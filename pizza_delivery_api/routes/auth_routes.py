@@ -18,7 +18,7 @@ from ..models.connection.database import get_session
 from ..models.models import User
 from ..models.schemas import SignUpModelRequest, SignUpModelResponse, Token
 
-auth_router = APIRouter(prefix='/auth', tags=['auth'])
+auth_router = APIRouter(prefix='/auth', tags=['token'])
 
 OAuth2Form = Annotated[OAuth2PasswordRequestForm, Depends()]
 Session = Annotated[Session, Depends(get_session)]
